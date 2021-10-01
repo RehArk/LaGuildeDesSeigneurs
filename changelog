@@ -1,0 +1,9 @@
+v0.1
+- symphonie install
+
+v0.2
+- add entity character
+- add .htaccess
+- add var dumper (dev)
+- add character controller
+- add test
