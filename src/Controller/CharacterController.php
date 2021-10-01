@@ -14,7 +14,9 @@ class CharacterController extends AbstractController
 {
 
     /**
-     * @Route("/character", name="character")
+     * @Route("/character", 
+     * name="character", 
+     * methods={"GET", "HEAD"})
      */
     public function index(): Response
     {
@@ -25,7 +27,9 @@ class CharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character/display", name="character_display")
+     * @Route("/character/display", 
+     * name="character_display"
+     * methods={"GET", "HEAD"}))
      */
     public function display(): JsonResponse
     {
