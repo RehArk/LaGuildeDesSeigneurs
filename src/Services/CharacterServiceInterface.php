@@ -13,4 +13,6 @@ interface CharacterServiceInterface
 
     public function modify(Character $character);
 
+    public function delete(Character $character);
+
 }
