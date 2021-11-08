@@ -6,13 +6,18 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use DateTime;
 use App\Entity\Character;
+use App\Repository\CharacterRepository;
 use Doctrine\ORM\EntityManager;
 
 class CharacterService implements CharacterServiceInterface 
 {
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(
+        CharacterRepository $characterRepository,
+        EntityManagerInterface $em
+    )
     {
+        $this->characterRepository = $characterRepository;
         $this->em = $em;
     }
 
@@ -20,7 +25,10 @@ class CharacterService implements CharacterServiceInterface
     {
         $characters = [];
 
-        
+        $response = $this->characterRepository->findAll();
+        foreach ($response as $character) {
+            $characters[] = print_r($character);
+        }
 
         return $characters;
     }
