@@ -2,48 +2,48 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Character;
+use App\Entity\Player;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class CharacterVoter extends Voter
+class PlayerVoter extends Voter
 {
-
-    public const CHARACTER_DISPLAY = 'characterDisplay';
-    public const CHARACTER_CREATE = 'characterCreate';
-    public const CHARACTER_DISPLAY_ALL = 'characterDisplayAll';
-    public const CHARACTER_MODIFY ='characterModify';
-    public const CHARACTER_DELETE = 'characterDelete';
+    public const PLAYER_DISPLAY = 'playerDisplay';
+    public const PLAYER_CREATE = 'playerCreate';
+    public const PLAYER_DISPLAY_ALL = 'playerDisplayAll';
+    public const PLAYER_MODIFY ='playerModify';
+    public const PLAYER_DELETE = 'playerDelete';
 
     private const ATTRIBUTES = array(
-        self::CHARACTER_DISPLAY_ALL,
-        self::CHARACTER_DISPLAY,
-        self::CHARACTER_CREATE,
-        self::CHARACTER_MODIFY,
-        self::CHARACTER_DELETE
+        self::PLAYER_DISPLAY_ALL,
+        self::PLAYER_DISPLAY,
+        self::PLAYER_CREATE,
+        self::PLAYER_MODIFY,
+        self::PLAYER_DELETE
     );
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         switch ($attribute) {
 
-            case self::CHARACTER_DISPLAY_ALL:
+            case self::PLAYER_DISPLAY_ALL:
                 return $this->canDisplay();
                 break;
                 
-            case self::CHARACTER_DISPLAY:
+            case self::PLAYER_DISPLAY:
                 return $this->canDisplay();
                 break;
 
-            case self::CHARACTER_CREATE:
+            case self::PLAYER_CREATE:
                 return $this->canCreate();
                 break;
             
-            case self::CHARACTER_MODIFY:
+            case self::PLAYER_MODIFY:
                 return $this->canModify();
                 break;
 
-            case self::CHARACTER_DELETE:
+            case self::PLAYER_DELETE:
                 return $this->canDelete();
                 break;
             
@@ -56,7 +56,7 @@ class CharacterVoter extends Voter
     protected function supports($attribute, $subject) 
     {
         if($subject !== null) {
-            return $subject instanceof Character && in_array($attribute, self::ATTRIBUTES);
+            return $subject instanceof Player && in_array($attribute, self::ATTRIBUTES);
         }
 
         return in_array($attribute, self::ATTRIBUTES);

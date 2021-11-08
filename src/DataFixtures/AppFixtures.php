@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Character;
+use App\Entity\Player;
 use App\Services\CharacterServiceInterface;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,7 +14,15 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($i=0; $i < 10; $i++) { 
+
+        $this->createChar($manager);
+        $this->createPlayer($manager);
+       
+    }
+
+    protected function createChar(ObjectManager $manager) 
+    {
+         for ($i=0; $i < 10; $i++) { 
         
             $character = new Character();
             $character
@@ -31,6 +40,28 @@ class AppFixtures extends Fixture
             ;
 
             $manager->persist($character);
+        }
+
+        $manager->flush();
+    }
+
+    protected function createPLayer(ObjectManager $manager) 
+    {
+        for ($i=0; $i < 5; $i++) { 
+        
+            $player = new Player();
+            $player
+                ->setFirstname('Vincent'.$i)
+                ->setLastname('CLERC')
+                ->setPassword(hash('sha1', 'password'))
+                ->setEmail('vincentclercs73@gmail.com')
+                ->setMirian(0)
+                ->setIdentifier(hash('sha1', uniqid()))
+                ->setCreation(new DateTime())
+                ->setModification(new DateTime())
+            ;
+
+            $manager->persist($player);
         }
 
         $manager->flush();
