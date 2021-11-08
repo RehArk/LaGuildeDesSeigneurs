@@ -27,7 +27,7 @@ class CharacterService implements CharacterServiceInterface
 
         $response = $this->characterRepository->findAll();
         foreach ($response as $character) {
-            $characters[] = print_r($character);
+            $characters[] = $character->toArray();
         }
 
         return $characters;
