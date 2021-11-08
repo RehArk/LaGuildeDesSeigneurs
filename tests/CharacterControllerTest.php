@@ -101,14 +101,14 @@ class CharacterControllerTest extends WebTestCase
 
     public function testDelete(): void
     {
-        $this->client->request('PUT', '/character/modify/' . self::$identifier);
+        $this->client->request('PUT', '/character/delete/' . self::$identifier);
 
         $this->assertJsonResponse();
     }
 
     public function testDeleteNotExistIdentifier(): void
     {
-        $this->client->request('PUT', '/character/modify/b38657705509f7afe8e5aa114a1357bc54eerror');
+        $this->client->request('PUT', '/character/delete/b38657705509f7afe8e5aa114a1357bc54eerror');
 
         $this->assert404Error();
     }
