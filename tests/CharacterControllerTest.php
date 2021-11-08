@@ -70,4 +70,18 @@ class CharacterControllerTest extends WebTestCase
         $this->assertJsonResponse();
     }
 
+    public function testModify(): void
+    {
+        $this->client->request('PUT', '/character/modify/b38657705509f7afe8e5aa114a1357bc54e5b698');
+
+        $this->assertJsonResponse();
+    }
+
+    public function testModifyNotExistIdentifier(): void
+    {
+        $this->client->request('PUT', '/character/modify/b38657705509f7afe8e5aa114a1357bc54eerror');
+
+        $this->assert404Error();
+    }
+
 }

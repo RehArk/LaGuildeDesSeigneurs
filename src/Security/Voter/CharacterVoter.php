@@ -13,11 +13,13 @@ class CharacterVoter extends Voter
     public const CHARACTER_DISPLAY = 'characterDisplay';
     public const CHARACTER_CREATE = 'characterCreate';
     public const CHARACTER_DISPLAY_ALL = 'characterDisplayAll';
+    public const CHARACTER_MODIFY ='characterModify';
 
     private const ATTRIBUTES = array(
         self::CHARACTER_DISPLAY_ALL,
         self::CHARACTER_DISPLAY,
-        self::CHARACTER_CREATE
+        self::CHARACTER_CREATE,
+        self::CHARACTER_MODIFY
     );
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -34,6 +36,10 @@ class CharacterVoter extends Voter
 
             case self::CHARACTER_CREATE:
                 return $this->canCreate();
+                break;
+            
+            case self::CHARACTER_MODIFY:
+                return $this->canModify();
                 break;
             
             default:
@@ -56,6 +62,10 @@ class CharacterVoter extends Voter
     }
 
     protected function canCreate() {
+        return true;
+    }
+
+    protected function canModify() {
         return true;
     }
 }
