@@ -108,4 +108,24 @@ class CharacterController extends AbstractController
 
         return new JsonResponse(array('delete' => $response));
     }
+
+    /**
+     * @Route("/character/image/{kind}/{number}", 
+     * name="character_image_with_kind",
+     * requirements={"identifier": "^([0-9]{1,2})$"},
+     * methods={"GET", "HEAD"}))
+     * 
+     * @Route("/character/image/{number}", 
+     * name="character_image",
+     * requirements={"identifier": "^([0-9]{1,2})$"},
+     * methods={"GET", "HEAD"}))
+     */
+    public function images(int $number, string $kind = null)
+    {
+        $this->denyAccessUnlessGranted('characterImage');
+
+        $image = $this->characterService->getImages($number, $kind);
+
+        return new JsonResponse($image);
+    }
 }

@@ -101,14 +101,14 @@ class PlayerControllerTest extends WebTestCase
 
     public function testDelete(): void
     {
-        $this->client->request('PUT', '/player/delete/' . self::$identifier);
+        $this->client->request('DELETE', '/player/delete/' . self::$identifier);
 
         $this->assertJsonResponse();
     }
 
     public function testDeleteNotExistIdentifier(): void
     {
-        $this->client->request('PUT', '/player/delete/b38657705509f7afe8e5aa114a1357bc54eerror');
+        $this->client->request('DELETE', '/player/delete/b38657705509f7afe8e5aa114a1357bc54eerror');
 
         $this->assert404Error();
     }

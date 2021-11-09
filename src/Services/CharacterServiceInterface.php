@@ -15,4 +15,6 @@ interface CharacterServiceInterface
 
     public function delete(Character $character);
 
+    public function getImages(int $number, string $kind);
+
 }

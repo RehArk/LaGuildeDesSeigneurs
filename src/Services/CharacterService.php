@@ -8,6 +8,7 @@ use DateTime;
 use App\Entity\Character;
 use App\Repository\CharacterRepository;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Finder\Finder;
 
 class CharacterService implements CharacterServiceInterface 
 {
@@ -78,10 +79,34 @@ class CharacterService implements CharacterServiceInterface
 
     public function delete(Character $character) 
     {
-
         $this->em->remove($character);
         $this->em->flush();
         return true;
+    }
 
+    public function getImages(int $number, ?string $kind = null)
+    {
+        $folder = __DIR__ . '/../../public/images/';
+
+        $finder = new Finder();
+        $finder
+            ->files()
+            ->in($folder)
+            ->notPath('/cartes/')
+            ->sortByName()
+        ;
+
+        if($kind !== null){
+            $finder->path('/' . $kind . '/');
+        }
+
+        $images = [];
+        foreach ($finder as $file) {
+            $images[] = '/images/' . str_replace('\\', '/', $file->getRelativePathname());
+        }
+
+        shuffle($images);
+
+        return array_slice($images, 0, $number, true);
     }
 }

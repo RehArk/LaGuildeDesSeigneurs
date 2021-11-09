@@ -14,13 +14,15 @@ class CharacterVoter extends Voter
     public const CHARACTER_DISPLAY_ALL = 'characterDisplayAll';
     public const CHARACTER_MODIFY ='characterModify';
     public const CHARACTER_DELETE = 'characterDelete';
+    public const CHARACTER_IMAGE = 'characterImage';
 
     private const ATTRIBUTES = array(
         self::CHARACTER_DISPLAY_ALL,
         self::CHARACTER_DISPLAY,
         self::CHARACTER_CREATE,
         self::CHARACTER_MODIFY,
-        self::CHARACTER_DELETE
+        self::CHARACTER_DELETE,
+        self::CHARACTER_IMAGE
     );
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -45,6 +47,10 @@ class CharacterVoter extends Voter
 
             case self::CHARACTER_DELETE:
                 return $this->canDelete();
+                break;
+
+            case self::CHARACTER_IMAGE:
+                return $this->imageAccess();
                 break;
             
             default:
@@ -75,6 +81,10 @@ class CharacterVoter extends Voter
     }
 
     protected function canDelete() {
+        return true;
+    }
+
+    protected function imageAccess() {
         return true;
     }
 }
