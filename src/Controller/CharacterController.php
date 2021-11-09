@@ -98,7 +98,7 @@ class CharacterController extends AbstractController
      * @Route("/character/delete/{identifier}", 
      * name="character_delete",
      * requirements={"identifier": "^([a-z0-9]{40})$"},
-     * methods={"PUT", "HEAD"}))
+     * methods={"DELETE", "HEAD"}))
      */
     public function delete(Character $character)
     {

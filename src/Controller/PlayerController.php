@@ -89,9 +89,8 @@ class PlayerController extends AbstractController
      * @Route("/player/delete/{identifier}", 
      * name="player_delete",
      * requirements={"identifier": "^([a-z0-9]{40})$"},
-     * methods={"PUT", "HEAD"}))
+     * methods={"DELETE", "HEAD"}))
      */
-
     public function delete(Player $player): Response
     {
         $this->denyAccessUnlessGranted('playerDelete', $player);
