@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Character;
 use App\Services\CharacterServiceInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class CharacterController extends AbstractController
 {
@@ -57,11 +58,11 @@ class CharacterController extends AbstractController
      * name="character_create",
      * methods={"POST", "HEAD"})
      */
-    public function create()
+    public function create(Request $request)
     {
         $this->denyAccessUnlessGranted('characterCreate');
 
-        $character = $this->characterService->create();
+        $character = $this->characterService->create($request->getContent());
 
         return new JsonResponse($character->toArray());
     }
@@ -85,15 +86,15 @@ class CharacterController extends AbstractController
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"PUT", "HEAD"}))
      */
-    public function update(Character $character)
+    public function update(Character $character, Request $request)
     {
         $this->denyAccessUnlessGranted('characterModify', $character);
 
-        $character = $this->characterService->modify($character);
+        $character = $this->characterService->modify($character, $request->getContent());
 
         return new JsonResponse($character->toArray());
     }
-
+    
     /**
      * @Route("/character/delete/{identifier}", 
      * name="character_delete",
@@ -128,4 +129,5 @@ class CharacterController extends AbstractController
 
         return new JsonResponse($image);
     }
+
 }

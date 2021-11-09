@@ -40,7 +40,23 @@ class CharacterControllerTest extends WebTestCase
 
     public function testCreate(): void
     {
-        $this->client->request('POST', '/character/create');
+        $this->client->request(
+            'POST', 
+            '/character/create',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            '{
+                "kind":"Dame",
+                "name":"Eldalótë",
+                "surname":"Fleur elfique",
+                "caste":"Elfe",
+                "knowledge":"Arts",
+                "intelligence":120,
+                "life":12,
+                "image":"/images/eldalote.jpg"
+            }'
+        );
 
         $this->assertJsonResponse();
         $this->defineIdentifier();
@@ -87,7 +103,19 @@ class CharacterControllerTest extends WebTestCase
 
     public function testModify(): void
     {
-        $this->client->request('PUT', '/character/modify/' . self::$identifier);
+
+        $this->client->request(
+            'PUT', 
+            '/character/modify/' . self::$identifier,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            '{
+                "name":"Eldalótë modify",
+                "intelligence":125,
+                "life":13
+            }'
+        );
 
         $this->assertJsonResponse();
     }
