@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer;
+use Symfony\Component\Serializer\Serializer;
 
 
 /**
@@ -26,7 +26,7 @@ class Player
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Assert\NotBlank
@@ -36,7 +36,7 @@ class Player
      * )
      * @ORM\Column(type="string", length=48)
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * Assert\NotBlank
@@ -46,19 +46,19 @@ class Player
      * )
      * @ORM\Column(type="string", length=45)
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * Assert\NotBlank
      * @Assert\Email
      * @ORM\Column(type="string", length=128)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $mirian;
+    private int $mirian;
 
     /**
      * @Assert\Length(
@@ -67,7 +67,7 @@ class Player
      * )
      * @ORM\Column(type="string", length=40)
      */
-    private $identifier;
+    private string $identifier;
 
     /**
      * @Assert\Length(
@@ -76,22 +76,22 @@ class Player
      * )
      * @ORM\Column(type="string", length=60)
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $modification;
+    private \DateTimeInterface $modification;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $creation;
+    private \DateTimeInterface $creation;
 
     /**
      * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
      */
-    private $characters;
+    private ArrayCollection $characters;
 
     public function __construct()
     {
@@ -235,7 +235,7 @@ class Player
         return $this;
     }
 
-    public function seriaizerJson()
+    public function seriaizerJson($data)
     {
         $encoders = new JsonEncoder();
         $normalizers = new ObjectNormalizer();

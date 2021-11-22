@@ -48,7 +48,7 @@ class PlayerVoter extends Voter
                 break;
             
             default:
-                # code...
+                return false;
                 break;
         }
     }

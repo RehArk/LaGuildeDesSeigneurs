@@ -20,7 +20,7 @@ class AppFixtures extends Fixture
        
     }
 
-    protected function createChar(ObjectManager $manager) 
+    protected function createChar(ObjectManager $manager) : void
     {
          for ($i=0; $i < 10; $i++) { 
         
@@ -45,7 +45,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function createPLayer(ObjectManager $manager) 
+    protected function createPLayer(ObjectManager $manager) : void
     {
         for ($i=0; $i < 5; $i++) { 
         

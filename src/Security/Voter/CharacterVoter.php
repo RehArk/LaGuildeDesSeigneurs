@@ -54,7 +54,7 @@ class CharacterVoter extends Voter
                 break;
             
             default:
-                # code...
+                return false;
                 break;
         }
     }

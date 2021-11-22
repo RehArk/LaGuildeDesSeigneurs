@@ -29,6 +29,8 @@ class CharacterService implements CharacterServiceInterface
 
     private $formFactory;
     private $validator;
+    private $characterRepository;
+    private $em;
 
 
     public function __construct(
@@ -47,7 +49,7 @@ class CharacterService implements CharacterServiceInterface
     /**
      * {@inheritdoc}
      */
-     public function serializeJson($data)
+     public function serializeJson($data) : Serializer
      {
         $encoders = new JsonEncoder();
         $defaultContext = [
@@ -64,7 +66,7 @@ class CharacterService implements CharacterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function isEntityFilled(Character $character)
+    public function isEntityFilled(Character $character) : void
     {
 
         $errors = $this->validator->validate($character);
@@ -77,7 +79,7 @@ class CharacterService implements CharacterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function submit(Character $character, $formName, $data)
+    public function submit(Character $character, $formName, $data) : void
     {
         $dataArray = is_array($data) ? $data : json_decode($data, true);
 
@@ -109,7 +111,7 @@ class CharacterService implements CharacterServiceInterface
         return $characters;
     }
 
-    public function create(string $data)
+    public function create(string $data) : Character
     {
         //Use with {"kind":"Dame","name":"Eldalótë","surname":"Fleur elfique","caste":"Elfe","knowledge":"Arts","intelligence":120,"life":12,"image":"/images/eldalote.jpg"}
         $character = new Character();

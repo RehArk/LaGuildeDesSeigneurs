@@ -20,15 +20,17 @@ use Symfony\Component\Serializer\Serializer;
 class PlayerService implements PlayerServiceInterface
 {
 
-    private $formFactory;
+    private PlayerRepository $playerRepository;
+    private EntityManagerInterface $em;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(
-        PlayerRepository $PlayerRepository,
+        PlayerRepository $playerRepository,
         EntityManagerInterface $em,
         FormFactoryInterface $formFactory
     )
     {
-        $this->playerRepository = $PlayerRepository;
+        $this->playerRepository = $playerRepository;
         $this->em = $em;
         $this->formFactory = $formFactory;
     }
@@ -38,7 +40,7 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-     public function serializeJson($data)
+     public function serializeJson($data) : Serializer
      {
         $encoders = new JsonEncoder();
         $defaultContext = [
@@ -55,7 +57,7 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function isEntityFilled(Player $player)
+    public function isEntityFilled(Player $player) : void
     {
         if (null === $player->getFirstname() ||
             null === $player->getLastname() ||
@@ -72,7 +74,7 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function submit(Player $player, $formName, $data)
+    public function submit(Player $player, $formName, $data) : void
     {
         $dataArray = is_array($data) ? $data : json_decode($data, true);
 
@@ -104,7 +106,7 @@ class PlayerService implements PlayerServiceInterface
         return $this->playerRepository->findAll();
     }
 
-    public function create(string $data)
+    public function create(string $data) : Player
     {
         $player = new Player();
         $player
@@ -122,7 +124,7 @@ class PlayerService implements PlayerServiceInterface
         return $player;
     }
 
-    public function modify(Player $player, string $data)
+    public function modify(Player $player, string $data) : Player
     {
         $player
          ->setModification(new DateTime())
@@ -138,7 +140,7 @@ class PlayerService implements PlayerServiceInterface
         return $player;
     }
 
-    public function delete(Player $player)
+    public function delete(Player $player) : bool
     {
         $this->em->remove($player);
         $this->em->flush();

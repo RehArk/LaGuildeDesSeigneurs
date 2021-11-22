@@ -37,7 +37,7 @@ class PlayerController extends AbstractController
      * name="player_index", 
      * methods={"GET", "HEAD"})
      */
-    public function index(): Response
+    public function index(): JsonResponse
     {
         $this->denyAccessUnlessGranted('playerDisplayAll');
 
@@ -52,7 +52,7 @@ class PlayerController extends AbstractController
      * name="player_create",
      * methods={"POST", "HEAD"}))
      */
-    public function create(Request $request)
+    public function create(Request $request) : JsonResponse
     {
         $this->denyAccessUnlessGranted('playerCreate');
 
@@ -69,7 +69,7 @@ class PlayerController extends AbstractController
      * methods={"GET", "HEAD"}))
      * @Entity("player", expr="repository.findOneByIdentifier(identifier)")
      */
-    public function display(Player $player): Response
+    public function display(Player $player): JsonResponse
     {
        $this->denyAccessUnlessGranted('playerDisplay', $player);
 
@@ -83,7 +83,7 @@ class PlayerController extends AbstractController
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"PUT", "HEAD"}))
      */
-     public function update(Player $player, Request $request)
+     public function update(Player $player, Request $request) : JsonResponse
     {
         $this->denyAccessUnlessGranted('playerModify', $player);
 
@@ -99,7 +99,7 @@ class PlayerController extends AbstractController
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"DELETE", "HEAD"}))
      */
-    public function delete(Player $player): Response
+    public function delete(Player $player): JsonResponse
     {
         $this->denyAccessUnlessGranted('playerDelete', $player);
 

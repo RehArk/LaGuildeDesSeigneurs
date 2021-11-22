@@ -58,7 +58,7 @@ class CharacterController extends AbstractController
      * name="character_create",
      * methods={"POST", "HEAD"})
      */
-    public function create(Request $request)
+    public function create(Request $request) : JsonResponse
     {
         $this->denyAccessUnlessGranted('characterCreate');
 
@@ -88,7 +88,7 @@ class CharacterController extends AbstractController
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"PUT", "HEAD"}))
      */
-    public function update(Character $character, Request $request)
+    public function update(Character $character, Request $request) : JsonResponse
     {
         $this->denyAccessUnlessGranted('characterModify', $character);
 
@@ -104,7 +104,7 @@ class CharacterController extends AbstractController
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"DELETE", "HEAD"}))
      */
-    public function delete(Character $character)
+    public function delete(Character $character) : JsonResponse
     {
         $this->denyAccessUnlessGranted('characterDelete', $character);
 
@@ -124,7 +124,7 @@ class CharacterController extends AbstractController
      * requirements={"identifier": "^([0-9]{1,2})$"},
      * methods={"GET", "HEAD"}))
      */
-    public function images(int $number, string $kind = null)
+    public function images(int $number, string $kind = null) : JsonResponse
     {
         $this->denyAccessUnlessGranted('characterImage');
 

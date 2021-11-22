@@ -17,7 +17,7 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id = 1;
+    private int $id = 1;
 
     /**
      * Assert\NotBlank
@@ -28,7 +28,7 @@ class Character
      * @ORM\Column(type="string", length=16)
      * 
      */
-    private $kind;
+    private string $kind;
 
     /**
      * Assert\NotBlank
@@ -38,7 +38,7 @@ class Character
      * )
      * @ORM\Column(type="string", length=16)
      */
-    private $name;
+    private string $name;
 
     /**
      * Assert\NotBlank
@@ -48,7 +48,7 @@ class Character
      * )
      * @ORM\Column(type="string", length=64)
      */
-    private $surname;
+    private string $surname;
 
     /**
      * @Assert\Length(
@@ -57,7 +57,7 @@ class Character
      * )
      * @ORM\Column(type="string", length=16, nullable=true)
      */
-    private $caste;
+    private string $caste;
 
     /**
      * @Assert\Length(
@@ -66,17 +66,17 @@ class Character
      * )
      * @ORM\Column(type="string", length=16, nullable=true)
      */
-    private $knowledge;
+    private string $knowledge;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $intelligence;
+    private int $intelligence;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $life;
+    private int $life;
 
     /**
      * @Assert\Length(
@@ -85,12 +85,12 @@ class Character
      * )
      * @ORM\Column(type="string", length=128, nullable=true)
      */
-    private $image;
+    private string $image;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $creation;
+    private \DateTimeInterface $creation;
 
     /**
      * @Assert\Length(
@@ -99,17 +99,17 @@ class Character
      * )
      * @ORM\Column(type="string", length=40)
      */
-    private $identifier;
+    private string $identifier;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $modification;
+    private \DateTimeInterface $modification;
 
     /**
      * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters")
      */
-    private $player;
+    private Player $player;
 
     /**
      * Converts the entity in a array

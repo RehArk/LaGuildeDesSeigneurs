@@ -115,6 +115,12 @@
     "phpdocumentor/type-resolver": {
         "version": "1.5.1"
     },
+    "phpstan/phpstan": {
+        "version": "1.2.0"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "1.0.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -126,6 +132,9 @@
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "rector/rector": {
+        "version": "0.12.4"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
