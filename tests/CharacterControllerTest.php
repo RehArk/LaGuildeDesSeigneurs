@@ -82,9 +82,10 @@ class CharacterControllerTest extends WebTestCase
     public function testDisplayValide(): void
     {
         $this->client->request('GET', '/character/display/' . self::$identifier);
-
+        
         $this->assertJsonResponse();
         $this->assertIdentifier();
+        
     }
 
     public function testDisplayBadIdentifier() 
