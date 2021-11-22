@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CharacterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,44 +17,54 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $id = 1;
 
     /**
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
      * @ORM\Column(type="string", length=16)
      * 
-     * @Assert\NotBlank
+     */
+    private $kind;
+
+    /**
+     * Assert\NotBlank
      * @Assert\Length(
-     *  min = 3,
-     *  max = 64,
+     *      min=3,
+     *      max=16,
      * )
+     * @ORM\Column(type="string", length=16)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank
+     * Assert\NotBlank
      * @Assert\Length(
-     *  min = 3,
-     *  max = 16,
+     *      min=3,
+     *      max=64,
      * )
+     * @ORM\Column(type="string", length=64)
      */
     private $surname;
 
     /**
-     * @ORM\Column(type="string", length=16, nullable=true)
      * @Assert\Length(
-     *  min = 3,
-     *  max = 16,
+     *      min=3,
+     *      max=16,
      * )
+     * @ORM\Column(type="string", length=16, nullable=true)
      */
     private $caste;
 
     /**
-     * @ORM\Column(type="string", length=16, nullable=true)
      * @Assert\Length(
-     *  min = 3,
-     *  max = 16,
+     *      min=3,
+     *      max=16,
      * )
+     * @ORM\Column(type="string", length=16, nullable=true)
      */
     private $knowledge;
 
@@ -68,23 +79,13 @@ class Character
     private $life;
 
     /**
-     * @ORM\Column(type="string", length=128, nullable=true)
      * @Assert\Length(
-     *  min = 3,
-     *  max = 128,
+     *      min=5,
+     *      max=128,
      * )
+     * @ORM\Column(type="string", length=128, nullable=true)
      */
     private $image;
-
-    /**
-     * @ORM\Column(type="string", length=16)
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *  min = 3,
-     *  max = 16,
-     * )
-     */
-    private $kind;
 
     /**
      * @ORM\Column(type="datetime")
@@ -92,12 +93,11 @@ class Character
     private $creation;
 
     /**
-     * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank
      * @Assert\Length(
-     *  min = 40,
-     *  max = 60,
+     *      min=40,
+     *      max=40,
      * )
+     * @ORM\Column(type="string", length=40)
      */
     private $identifier;
 
@@ -105,6 +105,19 @@ class Character
      * @ORM\Column(type="datetime")
      */
     private $modification;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters")
+     */
+    private $player;
+
+    /**
+     * Converts the entity in a array
+     */
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
 
     public function getId(): ?int
     {
@@ -195,11 +208,6 @@ class Character
         return $this;
     }
 
-    public function toArray(): array
-    {
-        return get_object_vars($this);
-    }
-
     public function getKind(): ?string
     {
         return $this->kind;
@@ -244,6 +252,18 @@ class Character
     public function setModification(\DateTimeInterface $modification): self
     {
         $this->modification = $modification;
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
 
         return $this;
     }

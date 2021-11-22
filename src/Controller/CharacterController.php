@@ -62,9 +62,10 @@ class CharacterController extends AbstractController
     {
         $this->denyAccessUnlessGranted('characterCreate');
 
-        $character = $this->characterService->create($request->getContent());
+        $characters = $this->characterService->create($request->getContent());
 
-        return new JsonResponse($character->toArray());
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+        // return new JsonResponse($character->toArray());
     }
 
     /**
@@ -77,7 +78,8 @@ class CharacterController extends AbstractController
     {
         $this->denyAccessUnlessGranted('characterDisplay', $character);
 
-        return new JsonResponse($character->toArray());
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
+        // return new JsonResponse($character->toArray());
     }
 
     /**
@@ -92,7 +94,8 @@ class CharacterController extends AbstractController
 
         $character = $this->characterService->modify($character, $request->getContent());
 
-        return new JsonResponse($character->toArray());
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
+        // return new JsonResponse($character->toArray());
     }
     
     /**

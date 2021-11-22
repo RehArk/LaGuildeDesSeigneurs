@@ -18,4 +18,16 @@ class PlayerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Player::class);
     }
+
+    public function findOneByIdentifier($identifier)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'c')
+            ->leftJoin('p.characters', 'c')
+            ->where('p.identifier = :identifier')
+            ->setParameter('identifier', $identifier)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

@@ -3,9 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\PlayerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer;
+
 
 /**
+ * @ORM\Table(name="players")
  * @ORM\Entity(repositoryClass=PlayerRepository::class)
  */
 class Player
@@ -18,29 +29,54 @@ class Player
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
+     * @ORM\Column(type="string", length=48)
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
+     * @ORM\Column(type="string", length=45)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * Assert\NotBlank
+     * @Assert\Email
+     * @ORM\Column(type="string", length=128)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $mirian;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Assert\Length(
+     *      min=40,
+     *      max=40,
+     * )
+     * @ORM\Column(type="string", length=40)
      */
-    private $creation;
+    private $identifier;
+
+    /**
+     * @Assert\Length(
+     *      min=8,
+     *      max=60,
+     * )
+     * @ORM\Column(type="string", length=60)
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="datetime")
@@ -48,15 +84,26 @@ class Player
     private $modification;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="datetime")
      */
-    private $identifier;
+    private $creation;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
      */
-    private $password;
+    private $characters;
 
+    public function __construct()
+    {
+        $this->characters = new ArrayCollection();
+    }
+
+    public function toArray()
+    {
+        dump($this);
+        return get_object_vars($this);
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -110,14 +157,26 @@ class Player
         return $this;
     }
 
-    public function getCreation(): ?\DateTimeInterface
+    public function getIdentifier(): ?string
     {
-        return $this->creation;
+        return $this->identifier;
     }
 
-    public function setCreation(\DateTimeInterface $creation): self
+    public function setIdentifier(string $identifier): self
     {
-        $this->creation = $creation;
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -134,32 +193,54 @@ class Player
         return $this;
     }
 
-    public function getIdentifier(): ?string
+    public function getCreation(): ?\DateTimeInterface
     {
-        return $this->identifier;
+        return $this->creation;
     }
 
-    public function setIdentifier(string $identifier): self
+    public function setCreation(\DateTimeInterface $creation): self
     {
-        $this->identifier = $identifier;
+        $this->creation = $creation;
 
         return $this;
     }
 
-    public function toArray(): array
+    /**
+     * @return Collection|Character[]
+     */
+    public function getCharacters(): Collection
     {
-        return get_object_vars($this);
+        return $this->characters;
     }
 
-    public function getPassword(): ?string
+    public function addCharacter(Character $character): self
     {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+        if (!$this->characters->contains($character)) {
+            $this->characters[] = $character;
+            $character->setPlayer($this);
+        }
 
         return $this;
+    }
+
+    public function removeCharacter(Character $character): self
+    {
+        if ($this->characters->removeElement($character)) {
+            // set the owning side to null (unless already changed)
+            if ($character->getPlayer() === $this) {
+                $character->setPlayer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function seriaizerJson()
+    {
+        $encoders = new JsonEncoder();
+        $normalizers = new ObjectNormalizer();
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+
+        return $serializer->serialize($data, 'json');
     }
 }
