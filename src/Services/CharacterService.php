@@ -88,6 +88,11 @@ class CharacterService implements CharacterServiceInterface
         return $this->characterRepository->findAll();
     }
 
+    public function getAllByIntelligenceLevel(int $intelligence)
+    {
+        return $this->characterRepository->findAllByIntelligenceMin($intelligence);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -150,51 +150,51 @@ class CharacterControllerTest extends WebTestCase
         $this->assertJsonResponse();
     }
 
-    public function testIndexWithIntelligence(): void
-    {
-        $this->client->request('GET', '/character/index/intelligence/120');
+     public function testIndexWithIntelligence(): void
+     {
+         $this->client->request('GET', '/character/index/intelligence/120');
 
-        $this->assertJsonResponse();
-    }
+         $this->assertJsonResponse();
+     }
 
-    public function testIndexWithIntelligence404(): void
-    {
-        $this->client->request('GET', '/character/index/intelligence/120a');
+     public function testIndexWithIntelligence404(): void
+     {
+         $this->client->request('GET', '/character/index/intelligence/120a');
 
-        $this->assert404Error();
-    }
+         $this->assert404Error();
+     }
 
-    public function testHtmlIndexWithIntelligence(): void
-    {
-        $this->client->request('GET', '/character/html/intelligence/120');
+     public function testHtmlIndexWithIntelligence(): void
+     {
+         $this->client->request('GET', '/character/html/intelligence/120');
 
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-    }
+         $response = $this->client->getResponse();
+         $this->assertEquals(200, $response->getStatusCode());
+     }
 
-    public function testHtmlIndexWithIntelligence404(): void
-    {
-        $this->client->request('GET', '/character/html/intelligence/120a');
+     public function testHtmlIndexWithIntelligence404(): void
+     {
+         $this->client->request('GET', '/character/html/intelligence/120a');
 
-        $this->assert404Error();
-    }
+         $this->assert404Error();
+     }
 
-    // /!\ --- 
-    // si les tests sont executer, il charge à l'infini à cause d'un probleme de curl
-    // /!\ --- 
+     // /!\ --- 
+     // si les tests sont executer, il charge à l'infini à cause d'un probleme de curl
+     // /!\ --- 
 
-    // public function testApiIndexWithIntelligence(): void
-    // {
-    //     $this->client->request('GET', '/character/api-html/intelligence/120');
+     // public function testApiIndexWithIntelligence(): void
+     // {
+     //     $this->client->request('GET', '/character/api-html/intelligence/120');
 
-    //     $this->assertJsonResponse();
-    // }
+     //     $this->assertJsonResponse();
+     // }
 
-    // public function testApiIndexWithIntelligence404(): void
-    // {
-    //     $this->client->request('GET', '/character/api-html/intelligence/120a');
+     // public function testApiIndexWithIntelligence404(): void
+     // {
+     //     $this->client->request('GET', '/character/api-html/intelligence/120a');
 
-    //     $this->assert404Error();
-    // }
+     //     $this->assert404Error();
+     // }
 
 }

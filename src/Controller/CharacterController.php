@@ -79,7 +79,23 @@ class CharacterController extends AbstractController
         return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 
+    /**
+     * Displays Characters by their intelligence level
+     *
+     * @Route("/character/index/intelligence/{intelligence}",
+     *     name="character_api_intelligence_level",
+     *     requirements={"intelligence": "^([0-9]{1,3})$"},
+     *     methods={"GET", "HEAD"}
+     * )
+     */
+    public function indexWithIntelligenceLevel(int $intelligence)
+    {
+        $this->denyAccessUnlessGranted('characterDisplayAll');
 
+        $characters = $this->characterService->getAllByIntelligenceLevel($intelligence);
+
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+    }
 
      /**
      * @Route("/character/create", 

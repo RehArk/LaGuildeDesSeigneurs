@@ -36,6 +36,18 @@ class CharacterHtmlController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/intelligence/{intelligence}", 
+     * name="character_html_index_with_intelligence_level",
+     * requirements={"intelligence": "^([0-9]{1,3})$"},
+     * methods={"GET"})
+     */
+    public function indexWithIntelligenceLevel(int $intelligence): Response
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' =>  $this->characterService->getAllByIntelligenceLevel($intelligence)
+        ]);
+    }
 
     /**
      * @Route("/new", name="character_html_new", methods={"GET", "POST"})

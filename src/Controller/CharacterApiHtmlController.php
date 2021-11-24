@@ -134,4 +134,22 @@ class CharacterApiHtmlController extends AbstractController
         return $this->redirectToRoute('character_api_html_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    /**
+     * @Route("/intelligence/{level}",
+     * name="character_api_html_index_with_intelligence_level",
+     * requirements={"level": "^([0-9]{1,3})$"},
+     * methods={"GET"})
+     */
+    public function intelligenceLevel(int $level)
+    {
+        $response = $this->client->request(
+            'GET',
+            'http://localhost:8000/character/index/intelligence/' .  $level
+        );
+
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $this->characterService->getAllByIntelligenceLevel($level),
+        ]);
+    }
 }

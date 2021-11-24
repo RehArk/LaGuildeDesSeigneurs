@@ -21,5 +21,8 @@ interface CharacterServiceInterface
 
     public function submit(Character $character, $formName, $data);
 
+    public function createFromHtml(Character $character);
+
+    public function modifyFromHtml(Character $character);
 
 }
