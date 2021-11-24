@@ -17,7 +17,7 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id = 1;
+    private int $id;
 
     /**
      * Assert\NotBlank
@@ -36,7 +36,7 @@ class Character
      *      min=3,
      *      max=16,
      * )
-     * @ORM\Column(type="string", length=16)
+     * @ORM\Column(type="string", length=16, name="gls_name")
      */
     private string $name;
 
@@ -110,14 +110,6 @@ class Character
      * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters")
      */
     private Player $player;
-
-    /**
-     * Converts the entity in a array
-     */
-    public function toArray()
-    {
-        return get_object_vars($this);
-    }
 
     public function getId(): ?int
     {

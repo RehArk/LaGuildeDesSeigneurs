@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PlayerVoter extends Voter
 {
+    public const PLAYER_INDEX = 'playerIndex';
     public const PLAYER_DISPLAY = 'playerDisplay';
     public const PLAYER_CREATE = 'playerCreate';
     public const PLAYER_DISPLAY_ALL = 'playerDisplayAll';
@@ -16,6 +17,7 @@ class PlayerVoter extends Voter
     public const PLAYER_DELETE = 'playerDelete';
 
     private const ATTRIBUTES = array(
+        self::PLAYER_INDEX,
         self::PLAYER_DISPLAY_ALL,
         self::PLAYER_DISPLAY,
         self::PLAYER_CREATE,
@@ -26,6 +28,10 @@ class PlayerVoter extends Voter
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         switch ($attribute) {
+
+            case self::PLAYER_INDEX:
+                return $this->canDisplay();
+                break;
 
             case self::PLAYER_DISPLAY_ALL:
                 return $this->canDisplay();

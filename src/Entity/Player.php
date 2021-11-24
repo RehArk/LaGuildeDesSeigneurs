@@ -8,13 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
-
-
 /**
  * @ORM\Table(name="players")
  * @ORM\Entity(repositoryClass=PlayerRepository::class)
@@ -91,17 +84,11 @@ class Player
     /**
      * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
      */
-    private ArrayCollection $characters;
+    private $characters;
 
     public function __construct()
     {
         $this->characters = new ArrayCollection();
-    }
-
-    public function toArray()
-    {
-        dump($this);
-        return get_object_vars($this);
     }
     
     public function getId(): ?int
@@ -235,12 +222,4 @@ class Player
         return $this;
     }
 
-    public function seriaizerJson($data)
-    {
-        $encoders = new JsonEncoder();
-        $normalizers = new ObjectNormalizer();
-        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
-
-        return $serializer->serialize($data, 'json');
-    }
 }

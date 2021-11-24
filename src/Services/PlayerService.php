@@ -4,10 +4,12 @@ namespace App\Services;
 
 use DateTime;
 use App\Entity\Player;
+use App\Event\PlayerEvent;
 use App\Form\PlayerType;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -23,16 +25,19 @@ class PlayerService implements PlayerServiceInterface
     private PlayerRepository $playerRepository;
     private EntityManagerInterface $em;
     private FormFactoryInterface $formFactory;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(
         PlayerRepository $playerRepository,
         EntityManagerInterface $em,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $dispatcher
     )
     {
         $this->playerRepository = $playerRepository;
         $this->em = $em;
         $this->formFactory = $formFactory;
+        $this->dispatcher = $dispatcher;
     }
 
 
@@ -40,7 +45,7 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-     public function serializeJson($data) : Serializer
+     public function serializeJson($data) : String
      {
         $encoders = new JsonEncoder();
         $defaultContext = [
@@ -96,13 +101,6 @@ class PlayerService implements PlayerServiceInterface
 
     public function getAll() : array 
     {
-        // $players = [];
-
-        // $response = $this->playerRepository->findAll();
-        // foreach ($response as $player) {
-        //     $players[] = $player->toArray();
-        // }
-
         return $this->playerRepository->findAll();
     }
 
@@ -133,6 +131,8 @@ class PlayerService implements PlayerServiceInterface
         $this->submit($player, PlayerType::class, $data);
         $this->isEntityFilled($player);
 
+        $event = new PlayerEvent($player);
+        $this->dispatcher->dispatch($event, PlayerEvent::PLAYER_MODIFIED);
 
         $this->em->persist($player);
         $this->em->flush();
@@ -145,5 +145,15 @@ class PlayerService implements PlayerServiceInterface
         $this->em->remove($player);
         $this->em->flush();
         return true;
+    }
+
+    
+    public function seriaizerJson($data)
+    {
+        $encoders = new JsonEncoder();
+        $normalizers = new ObjectNormalizer();
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+
+        return $serializer->serialize($data, 'json');
     }
 }

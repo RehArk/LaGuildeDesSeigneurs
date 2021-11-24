@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Character index{% endblock %}
+
+{% block body %}
+    <h1>Liste des personnages</h1>
+
+    <table class="table table-striped table-dark table-hover">
+        <thead>
+            <tr>
+                <th class="text-center text-light">Kind</th>
+                <th class="text-center text-light">Name</th>
+                <th class="text-center text-light">Surname</th>
+                <th class="text-center text-light">Caste</th>
+                <th class="text-center text-light">Knowledge</th>
+                <th class="text-center text-light">Intelligence</th>
+                <th class="text-center text-light">Life</th>
+                <th class="text-center text-light">Creation</th>
+                <th class="text-center text-light">Modification</th>
+                <th class="text-center text-light">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for character in characters %}
+            <tr>
+                <td class="text-center">{{ character.kind == 'Dame' ? ('<strong>' ~ character.kind ~ '</strong>')|raw : character.kind }}</td>
+                <td class="text-center"><a href="{{ path('character_html_show', {'id': character.id}) }}">{{character.name}}</a></td>
+                <td class="text-center">{{ character.surname }}</td>
+                <td class="text-center">{{ character.caste }}</td>
+                <td class="text-center">{{ character.knowledge }}</td>
+                <td class="text-center">{{ character.intelligence }}</td>
+                <td class="text-center">{{ character.life }}</td>
+                <td class="text-center">{{ character.creation ? character.creation|date('d-m-Y H:i:s') : '' }}</td>
+                <td class="text-center">{{ character.modification ? character.modification|date('d-m-Y H:i:s') : '' }}</td>
+                <td class="text-center">
+                    <a href="{{ path('character_html_edit', {'id': character.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="form-row text-center">
+        <div class="col-12">
+            <a href="{{ path('character_html_new') }}" class="btn btn-primary">Nouveau personnage</a>
+        </div>
+    </div>
+
+{% endblock %}

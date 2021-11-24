@@ -36,6 +36,7 @@ class CharacterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Character::class,
+            'allow_extra_fields' => true
         ]);
     }
 }
