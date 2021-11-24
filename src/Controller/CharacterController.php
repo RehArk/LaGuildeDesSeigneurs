@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Character;
 use App\Services\CharacterServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
+Use Nelmio\ApiDocBundle\Annotation\Model;
+Use OpenApi\Annotations as OA;
 
 class CharacterController extends AbstractController
 {
@@ -33,6 +37,13 @@ class CharacterController extends AbstractController
      * name="character", 
      * methods={"GET", "HEAD"})
      * 
+     * @OA\Response(
+     *  response=302,
+     *  description="Redirect",
+     * )
+     * 
+     * @OA\Tag(name="character")
+     * 
      */
     public function redirectIndex(): Response
     {
@@ -43,6 +54,21 @@ class CharacterController extends AbstractController
      * @Route("/character/index", 
      * name="character_index", 
      * methods={"GET", "HEAD"})
+     * 
+     * @OA\Response(
+     *  response=200,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
      */
     public function index(): Response
     {
@@ -50,22 +76,40 @@ class CharacterController extends AbstractController
 
         $characters = $this->characterService->getAll();
 
-        return new JsonResponse($characters);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
+
+
 
      /**
      * @Route("/character/create", 
      * name="character_create",
      * methods={"POST", "HEAD"})
+     * 
+     * @OA\Response(
+     *  response=200,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
+     * 
+     * @OA\Tag(name="character")
      */
     public function create(Request $request) : JsonResponse
     {
         $this->denyAccessUnlessGranted('characterCreate');
 
-        $characters = $this->characterService->create($request->getContent());
+        $character = $this->characterService->create($request->getContent());
 
-        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
-        // return new JsonResponse($character->toArray());
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
     }
 
     /**
@@ -73,13 +117,33 @@ class CharacterController extends AbstractController
      * name="character_display",
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"GET", "HEAD"}))
+     * @Entity("character", expr="repository.findOneByIdentifier(identifier)")
+     * @OA\Parameter(
+     *  name="identifier",
+     *  in="path",
+     *  description="identifier for the character",
+     *  required=true
+     * )
+     * @OA\Response(
+     *  response=200,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
      */
     public function display(Character $character): JsonResponse
     {
         $this->denyAccessUnlessGranted('characterDisplay', $character);
 
         return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
-        // return new JsonResponse($character->toArray());
     }
 
     /**
@@ -87,6 +151,20 @@ class CharacterController extends AbstractController
      * name="character_modify",
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"PUT", "HEAD"}))
+     * @OA\Response(
+     *  response=202,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
      */
     public function update(Character $character, Request $request) : JsonResponse
     {
@@ -95,7 +173,6 @@ class CharacterController extends AbstractController
         $character = $this->characterService->modify($character, $request->getContent());
 
         return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
-        // return new JsonResponse($character->toArray());
     }
     
     /**
@@ -103,6 +180,20 @@ class CharacterController extends AbstractController
      * name="character_delete",
      * requirements={"identifier": "^([a-z0-9]{40})$"},
      * methods={"DELETE", "HEAD"}))
+     * @OA\Response(
+     *  response=202,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
      */
     public function delete(Character $character) : JsonResponse
     {
@@ -123,6 +214,24 @@ class CharacterController extends AbstractController
      * name="character_image",
      * requirements={"identifier": "^([0-9]{1,2})$"},
      * methods={"GET", "HEAD"}))
+     * 
+     * @OA\Response(
+     *  response=200,
+     *  description="Success",
+     *  @Model(type=Character::class)
+     * )
+     * @OA\Response(
+     *  response=403,
+     *  description="Access denied",
+     * )
+     * @OA\Response(
+     *  response=404,
+     *  description="Not found",
+     * )
+     * @OA\Tag(name="character")
+     * 
+     * @OA\Tag(name="character")
+     * 
      */
     public function images(int $number, string $kind = null) : JsonResponse
     {
