@@ -1,5 +1,7 @@
-v0.1
-- symphonie install
+v0.3
+- add Character service
+- update character
+- add character service interface
 
 v0.2
 - add entity character
@@ -7,3 +9,6 @@ v0.2
 - add var dumper (dev)
 - add character controller
 - add test
+
+v0.1
+- symphonie install

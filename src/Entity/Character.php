@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\CharacterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CharacterRepository::class)
+ * @ORM\Table(name="characters")
  */
 class Character
 {
@@ -15,42 +17,99 @@ class Character
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id = 1;
+    private int $id;
 
     /**
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
      * @ORM\Column(type="string", length=16)
+     * 
      */
-    private $name = 'Anardil';
+    private string $kind;
 
     /**
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
+     * @ORM\Column(type="string", length=16, name="gls_name")
+     */
+    private string $name;
+
+    /**
+     * Assert\NotBlank
+     * @Assert\Length(
+     *      min=3,
+     *      max=64,
+     * )
      * @ORM\Column(type="string", length=64)
      */
-    private $surname = 'Amie du soleil';
+    private string $surname;
 
     /**
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
      * @ORM\Column(type="string", length=16, nullable=true)
      */
-    private $caste = 'Magicien';
+    private string $caste;
 
     /**
+     * @Assert\Length(
+     *      min=3,
+     *      max=16,
+     * )
      * @ORM\Column(type="string", length=16, nullable=true)
      */
-    private $knowledge = 'Science';
+    private string $knowledge;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $intelligence = 130;
+    private int $intelligence;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $life = 11;
+    private int $life;
 
     /**
+     * @Assert\Length(
+     *      min=5,
+     *      max=128,
+     * )
      * @ORM\Column(type="string", length=128, nullable=true)
      */
-    private $image;
+    private string $image;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $creation;
+
+    /**
+     * @Assert\Length(
+     *      min=40,
+     *      max=40,
+     * )
+     * @ORM\Column(type="string", length=40)
+     */
+    private string $identifier;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $modification;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters")
+     */
+    private Player $player;
 
     public function getId(): ?int
     {
@@ -141,8 +200,63 @@ class Character
         return $this;
     }
 
-    public function toArray(): array
+    public function getKind(): ?string
     {
-        return get_object_vars($this);
+        return $this->kind;
+    }
+
+    public function setKind(string $kind): self
+    {
+        $this->kind = $kind;
+
+        return $this;
+    }
+
+    public function getCreation(): ?\DateTimeInterface
+    {
+        return $this->creation;
+    }
+
+    public function setCreation(\DateTimeInterface $creation): self
+    {
+        $this->creation = $creation;
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function getModification(): ?\DateTimeInterface
+    {
+        return $this->modification;
+    }
+
+    public function setModification(\DateTimeInterface $modification): self
+    {
+        $this->modification = $modification;
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
+
+        return $this;
     }
 }
